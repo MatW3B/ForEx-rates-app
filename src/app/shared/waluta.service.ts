@@ -4,9 +4,9 @@ import { formatDate } from '@angular/common';
 import { map, concatMap } from 'rxjs/operators';
 
 
-import { WalutaInitialModel } from '../models/waluta-model';
+import { WalutaInitialModel, WalutaDataModel, longestPeriod } from '../models/waluta-model';
 import { WalutaModel, inRates } from '../models/waluta-model';
-import { Observable, Subject, from } from 'rxjs';
+import { Subject, from } from 'rxjs';
 
 import { DateService } from "./date.service";
 
@@ -21,6 +21,36 @@ export class WalutaService {
 
   constructor(private http: HttpClient,private dateServ: DateService) { }
 
+  longestPeriodOfNondecreasingRate(ratesData: Array<WalutaDataModel>): longestPeriod {
+    let longestPeriod: longestPeriod = {
+      length: 0, 
+      dateStart: ratesData[0].effectiveDate, 
+      dateStop: ratesData[0].effectiveDate,
+    }
+    let dateStart = ratesData[0].effectiveDate; 
+    let dateStop = ratesData[0].effectiveDate;
+    
+    let counterPeriod: number = 0;
+    for (let i = 1; i < ratesData.length; i++){
+      if (ratesData[i].mid < ratesData[i-1].mid) {
+        dateStop = ratesData[i].effectiveDate;
+        if (counterPeriod > longestPeriod.length) {
+          longestPeriod.dateStart = dateStart;
+          longestPeriod.dateStop = dateStop;
+          longestPeriod.length = counterPeriod;
+        }
+        dateStart = ratesData[i].effectiveDate;
+        counterPeriod = 0;
+      }
+      counterPeriod += 1;  
+    }
+    //if the date didnt change bind ending date
+    if (longestPeriod.dateStart == longestPeriod.dateStop) { 
+      longestPeriod.dateStop = ratesData[ratesData.length-1].effectiveDate 
+    }
+    return longestPeriod
+  }
+
   shareWalutaReqData(walutaReqData: WalutaModel): void {
     this.walutaReqDataSource.next(walutaReqData);   
   }
@@ -34,7 +64,6 @@ export class WalutaService {
   }
 
   getKursWaluty(dataOd: Date, dataDo: Date, waluta: string) {
-    // spearate date to make multiple requests
     this.waluta = waluta;
     var dataArray = this.dateServ.dateFragmentate(dataOd,dataDo);  
     
@@ -42,7 +71,7 @@ export class WalutaService {
     return from(dataArray)
     .pipe(concatMap(date => this.NBPhttpRequest(date))
       ,map((data: WalutaInitialModel) => data.rates
-      .map((data:inRates) => ({date: `${data.effectiveDate}`, mid: `${data.mid}`}))
+      .map((data:inRates) => ({effectiveDate: `${new Date(data.effectiveDate)}`, mid: `${data.mid}`}))
     ));
   }
 

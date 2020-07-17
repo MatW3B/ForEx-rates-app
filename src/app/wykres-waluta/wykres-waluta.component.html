@@ -1,1 +1,4 @@
-<p>wykres-waluta works!</p>
+<div id="longestPeriod" *ngIf="this.longestPeriodObj">
+    <p> Longest nondeclining period of {{ this.currencyName }}:  
+        {{ this.longestPeriodObj.dateStart | date: 'dd/MM/y'}} to {{ this.longestPeriodObj.dateStop | date:'dd/MM/y' }}</p>
+</div>

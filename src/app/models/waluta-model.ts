@@ -18,3 +18,9 @@ export interface inRates {
 export interface WalutaInitialModel {
     rates: inRates[],
 }
+
+export interface longestPeriod {
+    dateStart: Date, 
+    dateStop: Date, 
+    length: number,
+}
