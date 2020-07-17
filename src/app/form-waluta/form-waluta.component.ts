@@ -26,7 +26,7 @@ export class FormWalutaComponent implements OnInit {
     this.walutaInput = {
       nazwa: 'USD',
       dataDo: new Date('2020-07-14'),
-      dataOd: new Date('2020-07-01'),
+      dataOd: new Date('2018-07-14'),
     };
   }
 }
