@@ -1,0 +1,18 @@
+<body>
+<div id="inputRow">
+    <label for="nazwa"> Waluta: </label>
+    <input id="nazwa" [(ngModel)]="walutaInput.nazwa" placeholder ="nazwa waluty"/>
+
+    <mat-form-field>
+    <mat-label> Wybierz daty</mat-label>
+    <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker] ="picker"> 
+        <input matStartDate [(ngModel)]="walutaInput.dataOd"  placeholder="Od">
+        <input matEndDate [(ngModel)]="walutaInput.dataDo"  placeholder="Do">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <button [disabled]="!walutaInput.dataDo && !walutaInput.dataOd" (click) = "setRequestData()"> wyszukaj </button>
+</div>
+</body>
