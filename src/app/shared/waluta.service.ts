@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 import { map, concatMap } from 'rxjs/operators';
 
-
 import { WalutaInitialModel, WalutaDataModel, longestPeriod } from '../models/waluta-model';
 import { WalutaModel, inRates } from '../models/waluta-model';
 import { Subject, from } from 'rxjs';
@@ -71,7 +70,7 @@ export class WalutaService {
     return from(dataArray)
     .pipe(concatMap(date => this.NBPhttpRequest(date))
       ,map((data: WalutaInitialModel) => data.rates
-      .map((data:inRates) => ({effectiveDate: `${new Date(data.effectiveDate)}`, mid: `${data.mid}`}))
+      .map((data:inRates) => ({effectiveDate: new Date(`${data.effectiveDate}`), mid: `${data.mid}`}))
     ));
   }
 

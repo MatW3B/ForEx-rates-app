@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { ChartsModule } from "ng2-charts";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +29,7 @@ import { WykresWalutaComponent } from '../wykres-waluta/wykres-waluta.component'
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
+    ChartsModule,
   ],
   providers: [
     MatDatepickerModule,
