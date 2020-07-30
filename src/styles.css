@@ -1,8 +1,7 @@
 /* Application-wide Styles */
 body {
-    font-family: Lato;
     color: #ffffff;
     background-color: #212121;
     margin:2px;
-    padding:1px;
+    padding:10px;
   }

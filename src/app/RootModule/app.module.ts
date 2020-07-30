@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatInputModule } from '@angular/material/input';
 import { ChartsModule } from "ng2-charts";
 
@@ -28,6 +29,7 @@ import { WykresWalutaComponent } from '../wykres-waluta/wykres-waluta.component'
     BrowserAnimationsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
     MatInputModule,
     ChartsModule,
   ],

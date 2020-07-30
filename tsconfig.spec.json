@@ -6,7 +6,6 @@
     "types": [
       "jasmine"
     ],
-    "composite":true
   },
   "files": [
     "src/test.ts",

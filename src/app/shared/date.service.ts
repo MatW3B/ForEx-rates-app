@@ -15,6 +15,11 @@ export class DateService {
       { return Math.abs(difference) / (1000 * 60 * 60 * 24) }
   }
 
+  dateMonthDiff(dateFrom, dateTo) {
+    return dateTo.getMonth() - dateFrom.getMonth() + 
+      (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
+   }
+
   dateFragmentate(dateBegin: Date, dateEnd: Date): Array<Array<Date>> {
     // create an array of dates to pass
     var dateArray = [];

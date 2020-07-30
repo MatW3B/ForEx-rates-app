@@ -1,7 +1,20 @@
 <body>
 <div id="inputRow">
-    <label for="nazwa"> Waluta: </label>
-    <input id="nazwa" [(ngModel)]="walutaInput.nazwa" placeholder ="nazwa waluty"/>
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <input matInput
+                 placeholder="Currency"
+                 aria-label="Currency"
+                 [matAutocomplete]="auto"
+                 [formControl]="currencyCtrl">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let currency of filteredCurrencies | async" [value]="currency.code">
+              <span>{{currency.code}}</span> |
+              <small> {{currency.currency}}</small>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
 
     <mat-form-field>
     <mat-label> Wybierz daty</mat-label>
@@ -13,6 +26,6 @@
     <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
 
-    <button [disabled]="!walutaInput.dataDo && !walutaInput.dataOd" (click) = "setRequestData()"> wyszukaj </button>
+    <button [disabled]="!walutaInput.dataDo && !walutaInput.dataOd && !this.currencyCtrl.value" (click) = "setRequestData()"> wyszukaj </button>
 </div>
 </body>
