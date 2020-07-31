@@ -15,7 +15,7 @@ import { WalutaService } from '../shared/waluta.service';
   styleUrls: ['./form-waluta.component.css'],
 })
 export class FormWalutaComponent implements OnInit {
-  private urlCurrencyNames: string = "http://api.nbp.pl/api/exchangerates/tables/A/2020-01-02/";
+  urlCurrencyNames: string;
   walutaInput: WalutaModel;
   minDate: Date;
   maxDate: Date;
@@ -24,10 +24,12 @@ export class FormWalutaComponent implements OnInit {
   filteredCurrencies: Observable<currencyArray[]>;
   
   constructor(private walutaService: WalutaService, private http: HttpClient) { 
+    this.urlCurrencyNames = "http://api.nbp.pl/api/exchangerates/tables/A/2020-01-02/";
     this.maxDate = new Date();
     this.minDate = new Date(2002,1,2);
     this.walutaInput = {
-      nazwa: '',
+      name: '',
+      code: '',
       dataDo: new Date('2020-07-14'),
       dataOd: new Date('2018-07-14'),
     };
@@ -40,24 +42,39 @@ export class FormWalutaComponent implements OnInit {
   }
 
   private _filterCurrencies(value: string): currencyArray[] {
+    console.log(value);
     const filterValue = value.toLowerCase();
     return this.currencies.filter((currency) => currency.code.toLowerCase().indexOf(filterValue) === 0);
   }
+
+  private _setCurrencyData(currencyObj):void {
+    this.walutaInput.code = currencyObj.code,
+    this.walutaInput.name = currencyObj.currency;
+  }
   
   setRequestData():void{
-    this.walutaService.shareWalutaReqData({nazwa: this.currencyCtrl.value, dataOd: this.walutaInput.dataOd, dataDo: this.walutaInput.dataDo});  
+    this.walutaService.shareWalutaReqData(
+      { 
+        name: this.walutaInput.name,
+        code: this.walutaInput.code,
+        dataOd: this.walutaInput.dataOd, 
+        dataDo: this.walutaInput.dataDo
+      });  
   };
   
   ngOnInit(): void {
-    this.getCurrencyNames().subscribe((currencyData: any) => {
-      this.currencies = currencyData;
-      console.log(this.currencies);
-    }, (err) => {console.log(err)},
-    () => {
-      this.filteredCurrencies = this.currencyCtrl.valueChanges.pipe(
+    this.getCurrencyNames().subscribe(
+      (currencyData: any) => {
+        this.currencies = currencyData;
+        console.log(this.currencies);
+      }, 
+      (err) => {console.log(err)},
+      () => {
+        this.filteredCurrencies = this.currencyCtrl.valueChanges.pipe(
         startWith(''),
         map(currency => this._filterCurrencies(currency))
-      );
-    })
+        )
+      }
+    )
   }
 }

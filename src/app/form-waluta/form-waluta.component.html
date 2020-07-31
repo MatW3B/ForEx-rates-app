@@ -1,21 +1,27 @@
 <body>
-<div id="inputRow">
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Wybierz walutę
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div id="inputRow">
     <form class="example-form">
         <mat-form-field class="example-full-width">
           <input matInput
-                 placeholder="Currency"
-                 aria-label="Currency"
+                 placeholder="Waluta"
+                 aria-label="Waluta"
                  [matAutocomplete]="auto"
                  [formControl]="currencyCtrl">
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let currency of filteredCurrencies | async" [value]="currency.code">
+            <mat-option *ngFor="let currency of filteredCurrencies | async" [value]="currency.code" (onSelectionChange)="_setCurrencyData(currency)">
               <span>{{currency.code}}</span> |
-              <small> {{currency.currency}}</small>
+              <small > {{currency.currency}}</small>
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </form>
-
     <mat-form-field>
     <mat-label> Wybierz daty</mat-label>
     <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker] ="picker"> 
@@ -26,6 +32,9 @@
     <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
 
-    <button [disabled]="!walutaInput.dataDo && !walutaInput.dataOd && !this.currencyCtrl.value" (click) = "setRequestData()"> wyszukaj </button>
-</div>
+    <button mat-stroked-button [disabled]="!walutaInput.dataDo && !walutaInput.dataOd && !this.currencyCtrl.value" (click) = "setRequestData()"> wyszukaj </button>
+    </div>
+ 
+<!-- #enddocregion action-bar -->
+</mat-expansion-panel>
 </body>

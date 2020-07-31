@@ -1,11 +1,14 @@
 <div id="longestPeriod" *ngIf="this.isDataAvailable">
-    <p> Longest nondeclining period of {{ this.currencyName }}:  
-        {{ this.longestPeriodObj.dateStart | date: 'dd/MM/y'}} to {{ this.longestPeriodObj.dateStop | date:'dd/MM/y' }}</p>
-        <canvas baseChart width="300" height="200"
+    <h2 id="title">
+         Najdłuższy przedział czasu niemalejącego kursu waluty <span id="currencyName" [ngStyle]="this.textStyle"> {{ this.currencyName }}</span>: <br> 
+        {{ this.longestPeriodObj.dateStart | date: 'dd/MM/y'}} - {{ this.longestPeriodObj.dateStop | date:'dd/MM/y' }}
+    </h2>
+    <canvas baseChart width="300" height="200"
         [datasets]="lineChartData"
         [labels]="lineChartLabels"
         [options]="lineChartOptions"
         [legend]="false"
         [chartType]="lineChartType"
-        [colors]="lineChartColors"></canvas>
+        [colors]="lineChartColors">
+    </canvas>
 </div>

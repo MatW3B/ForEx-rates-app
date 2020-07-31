@@ -1,5 +1,6 @@
 export interface WalutaModel {
-    nazwa: string,
+    name: string,
+    code: string,
     dataOd?: Date,
     dataDo?: Date,
 };
