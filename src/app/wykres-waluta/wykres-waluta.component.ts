@@ -20,10 +20,14 @@ export class WykresWalutaComponent implements OnInit {
   walutaReqData: WalutaModel;
   subscription: Subscription;
   longestPeriodObj: longestPeriod;
-  currencyCode: string;
-  currencyName: string;
-  dateStart: Date;
-  dateStop: Date;
+  currency: {
+    code: string,
+    name: string,
+  };
+  date: {
+    start: Date,
+    stop: Date;
+  };
 
   colorAccent: string;
   textStyle: Object;
@@ -44,6 +48,15 @@ export class WykresWalutaComponent implements OnInit {
 
   constructor(private walutaService: WalutaService, private dateServ: DateService) 
   { 
+    this.currency = {
+      code: '',
+      name: '',
+    }
+    this.date = {
+      start: new Date(),
+      stop: new Date(),
+    }
+    
     this.colorAccent = globals.primaryAccentColor;
     this.textStyle = {color: this.colorAccent};
     this.gridLineColor = 'rgba(50,50,50,50)';
@@ -70,7 +83,6 @@ export class WykresWalutaComponent implements OnInit {
         xAxes:[{
           type:"time",
           time:{
-            unit: 'month',
             unitStepSize:1
           },
           ticks:{
@@ -94,49 +106,60 @@ export class WykresWalutaComponent implements OnInit {
     };
   }
 
+  private _initCurrencyData(walutaData):void {
+    this.currency.code = walutaData.code;
+    this.currency.name = walutaData.name; 
+    this.date.start = walutaData.dataOd;
+    this.date.stop = walutaData.dataDo;
+  }
+
+  private _setChartData(walutaData):void {
+    this.lineChartLabels=[], this.lineChartValues=[];
+    walutaData.forEach(element => {
+      this.lineChartLabels.push(formatDate(element.effectiveDate,"yyyy-MM-dd",'en'));
+      this.lineChartValues.push(element.mid);
+    });
+    this.lineChartData = [{ data: this.lineChartValues, pointBackgroundColor: [], pointRadius:[]}];
+    // setting scale
+    var monthDiff = this.dateServ.dateMonthDiff(this.date.start,this.date.stop);
+    if (monthDiff > 1) {
+      this.lineChartOptions.scales.xAxes[0].time.unit = "month";
+      this.lineChartOptions.scales.yAxes[0].ticks.stepSize = (Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / (monthDiff * 0.6667);
+    } else {
+      this.lineChartOptions.scales.xAxes[0].time.unit = "day";
+      this.lineChartOptions.scales.yAxes[0].ticks.stepSize = (Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / (this.date.stop.getDay() - this.date.start.getDay()) *0.1
+    }
+    this.longestPeriodObj = this.walutaService.longestPeriodOfNondecreasingRate(walutaData);
+  }
+
   ngOnInit(): void {  
     this.subscription = this.walutaService.walutaReqData$.subscribe(walutaReqData =>{ 
     //binding from form subscription
       this.isDataAvailable = false;
-      this.walutaData = [], this.lineChartLabels=[], this.lineChartValues=[];
-      this.currencyCode = walutaReqData.code, this.currencyName = walutaReqData.name, this.dateStart = walutaReqData.dataOd, this.dateStop = walutaReqData.dataDo;
-      this.yTicksStepSize = this.dateServ.dateMonthDiff(this.dateStart,this.dateStop);
-      console.log(walutaReqData);
-      this.walutaService.getKursWaluty(this.dateStart, this.dateStop, this.currencyCode)
-      .subscribe((data: any) => {this.walutaData.push(...data)},
+      this._initCurrencyData(walutaReqData);
+      this.walutaService.getKursWaluty(this.date.start, this.date.stop, this.currency.code)
+      .subscribe(
+        (data: any) => { this._setChartData([...data]) },
         (err) => {
-          console.log(err);
-          alert(err);
-          return;
-        },
-        () => { //complete subscription    
-          this.walutaData.forEach(element => {
-            this.lineChartLabels.push(formatDate(element.effectiveDate,"yyyy-MM-dd",'en'));
-            this.lineChartValues.push(element.mid);
-          });
-          // chart option changes
-          this.lineChartData = [{ data: this.lineChartValues, pointBackgroundColor: [], pointRadius:[]}];
-          this.lineChartOptions.scales.yAxes[0].ticks.stepSize = (Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / (this.yTicksStepSize * 0.6667);
-          this.longestPeriodObj = this.walutaService.longestPeriodOfNondecreasingRate(this.walutaData);
-          this.isDataAvailable = true;
-        }
+          alert(err.statusText);
+          return }, 
+        () => { this.isDataAvailable = true }
       );
     });   
   }
 
   ngAfterViewInit() {
     this.chart.changes.subscribe(element => {
-      if(this.isDataAvailable){
+      if(this.isDataAvailable && this.longestPeriodObj.length!=0){
         console.log("chart changes!");
         for (var i=0; i<this.chart.first.datasets[0].data.length; i++){
+          
           if (this.longestPeriodObj.dateStart <= new Date(this.chart.first.labels[i].toString()) 
-          && new Date(this.chart.first.labels[i].toString()) < this.longestPeriodObj.dateStop )
+          && new Date(this.chart.first.labels[i].toString()) <= this.longestPeriodObj.dateStop )
           {
             this.chart.first.datasets[0].pointBackgroundColor[i] = this.colorAccent;
             this.chart.first.datasets[0].pointRadius[i] = 3.5;
-          }
-          else 
-          { 
+          } else { 
             this.chart.first.datasets[0].pointBackgroundColor[i] = 'rgba(148,159,177,1)';
             this.chart.first.datasets[0].pointRadius[i] = 2;
           } 

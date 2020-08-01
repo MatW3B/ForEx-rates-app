@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -8,38 +7,39 @@ import { map, startWith } from 'rxjs/operators';
 import { WalutaModel } from '../models/waluta-model';
 import { currencyArray } from '../models/form-waluta-model';
 import { WalutaService } from '../shared/waluta.service';
+import { FormWalutaService } from './form-waluta.service';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-form-waluta', // css
   templateUrl: './form-waluta.component.html',
   styleUrls: ['./form-waluta.component.css'],
 })
-export class FormWalutaComponent implements OnInit {
-  urlCurrencyNames: string;
+export class FormWalutaComponent implements OnInit { 
+  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
+  currencyCtrl: FormControl;
+  dateRangeCtrl: FormGroup;
   walutaInput: WalutaModel;
   minDate: Date;
   maxDate: Date;
-  currencyCtrl = new FormControl();
   currencies: currencyArray[];
   filteredCurrencies: Observable<currencyArray[]>;
   
-  constructor(private walutaService: WalutaService, private http: HttpClient) { 
-    this.urlCurrencyNames = "http://api.nbp.pl/api/exchangerates/tables/A/2020-01-02/";
+  constructor(private walutaService: WalutaService, private fwService: FormWalutaService) { 
+    this.currencyCtrl = new FormControl('',Validators.required);
+    this.dateRangeCtrl = new FormGroup({
+      start: new FormControl('',Validators.required),
+      end: new FormControl('',Validators.required), 
+    });
+    this.dateRangeCtrl.setValidators(this.fwService.dateWeekValidator())
+
     this.maxDate = new Date();
     this.minDate = new Date(2002,1,2);
     this.walutaInput = {
       name: '',
       code: '',
-      dataDo: new Date('2020-07-14'),
-      dataOd: new Date('2018-07-14'),
     };
    }
-
-  getCurrencyNames() {
-    return this.http.get(this.urlCurrencyNames).pipe(
-      map((currencyData: any[]) => currencyData[0].rates)
-    );
-  }
 
   private _filterCurrencies(value: string): currencyArray[] {
     console.log(value);
@@ -53,19 +53,21 @@ export class FormWalutaComponent implements OnInit {
   }
   
   setRequestData():void{
+    this.expansionPanel.close();
     this.walutaService.shareWalutaReqData(
       { 
         name: this.walutaInput.name,
         code: this.walutaInput.code,
-        dataOd: this.walutaInput.dataOd, 
-        dataDo: this.walutaInput.dataDo
+        dataOd: this.dateRangeCtrl.controls.start.value,
+        dataDo: this.dateRangeCtrl.controls.end.value,
       });  
   };
   
   ngOnInit(): void {
-    this.getCurrencyNames().subscribe(
+    this.fwService.getCurrencyNames().subscribe(
       (currencyData: any) => {
         this.currencies = currencyData;
+        this.currencyCtrl.setValidators([this.fwService.currencyNameValidator(this.currencies)]);
         console.log(this.currencies);
       }, 
       (err) => {console.log(err)},

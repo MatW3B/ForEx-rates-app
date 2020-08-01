@@ -32,7 +32,7 @@ export class WalutaService {
     let counterPeriod: number = 0;
     for (let i = 1; i < ratesData.length; i++){
       if (ratesData[i].mid < ratesData[i-1].mid) {
-        dateStop = ratesData[i].effectiveDate;
+        dateStop = ratesData[i-1].effectiveDate;
         if (counterPeriod > longestPeriod.length) {
           longestPeriod.dateStart = dateStart;
           longestPeriod.dateStop = dateStop;
@@ -40,11 +40,12 @@ export class WalutaService {
         }
         dateStart = ratesData[i].effectiveDate;
         counterPeriod = 0;
-      }
-      counterPeriod += 1;  
+      } else {
+        counterPeriod += 1;
+      } 
     }
     //if the date didnt change bind ending date
-    if (longestPeriod.dateStart == longestPeriod.dateStop) { 
+    if (longestPeriod.dateStart == longestPeriod.dateStop) {
       longestPeriod.dateStop = ratesData[ratesData.length-1].effectiveDate 
     }
     return longestPeriod
