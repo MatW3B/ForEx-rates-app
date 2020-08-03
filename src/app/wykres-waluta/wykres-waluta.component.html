@@ -1,20 +1,22 @@
 <div id="longestPeriod" *ngIf="this.isDataAvailable">
-    <h2 id="title">
-         <span id="longestPeriodDateTrue" *ngIf="this.longestPeriodObj.length!=0"> 
-            Najdłuższy przedział czasu niemalejącego kursu waluty 
-            <span id="currencyName" [ngStyle]="this.textStyle">{{this.currency.code}} ({{ this.currency.name }})</span>: <br> 
-            {{ this.longestPeriodObj.dateStart | date: 'dd/MM/y'}} - {{ this.longestPeriodObj.dateStop | date:'dd/MM/y' }}
-         </span>
-         <span id="longestPeriodDateTrue" *ngIf="this.longestPeriodObj.length===0"> 
-            Kurs waluty 
-            <span id="currencyName" [ngStyle]="this.textStyle">
-                {{this.currency.code}} ({{ this.currency.name }})
-            </span>maleje w całym okresie.
-         </span>
-         
-        
-    </h2>
-    <canvas baseChart width="300" height="200"
+    <div id="chartText">
+        <h2 id="title">
+            <span id="longestPeriodDateTrue" *ngIf="this.longestPeriodObj.length!=0"> 
+               Najdłuższy przedział czasu niemalejącego kursu waluty <br> 
+               <span id="currencyName" [ngStyle]="this.textStyle">{{this.currency.code}} ({{ this.currency.name }})</span>:  
+               {{ this.longestPeriodObj.dateStart | date: 'dd/MM/y'}} - {{ this.longestPeriodObj.dateStop | date:'dd/MM/y' }}
+            </span>
+            <span id="longestPeriodDateTrue" *ngIf="this.longestPeriodObj.length===0"> 
+               Kurs waluty 
+               <span id="currencyName" [ngStyle]="this.textStyle">
+                   {{this.currency.code}} ({{ this.currency.name }})
+               </span>maleje w całym okresie.
+            </span>
+       </h2>
+    </div>
+
+    <div id="chartCanvas">
+        <canvas baseChart
         [datasets]="lineChartData"
         [labels]="lineChartLabels"
         [options]="lineChartOptions"
@@ -22,4 +24,5 @@
         [chartType]="lineChartType"
         [colors]="lineChartColors">
     </canvas>
+    </div>
 </div>

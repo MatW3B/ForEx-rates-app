@@ -1,4 +1,4 @@
-<body>
+<div id="form-waluta">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -7,8 +7,8 @@
     </mat-expansion-panel-header>
 
     <div id="inputRow">
-    <form class="example-form">
-        <mat-form-field class="example-full-width">
+    <form>
+        <mat-form-field>
           <input matInput
                  placeholder="Waluta"
                  aria-label="Waluta"
@@ -34,7 +34,7 @@
       <mat-date-range-picker #picker></mat-date-range-picker>
       <mat-error *ngIf="dateRangeCtrl.controls.end.hasError('notWeekDifference')"> Wybierz przynajmniej tydzień!</mat-error>
       </mat-form-field>
-    <button mat-stroked-button 
+    <button mat-raised-button color="accent" id="wyszukaj" 
     [disabled]=" !dateRangeCtrl.valid
       || !currencyCtrl.valid" 
       (click) = "setRequestData()"> wyszukaj </button>
@@ -42,4 +42,4 @@
  
   <!-- #enddocregion action-bar -->
   </mat-expansion-panel>
-</body>
+</div>

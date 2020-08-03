@@ -74,6 +74,7 @@ export class WykresWalutaComponent implements OnInit {
     ];
     this.lineChartOptions = {
       responsive:true,
+      maintainAspectRatio:false,
       elements:{
         point:{
           radius:2,
@@ -127,7 +128,7 @@ export class WykresWalutaComponent implements OnInit {
       this.lineChartOptions.scales.yAxes[0].ticks.stepSize = (Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / (monthDiff * 0.6667);
     } else {
       this.lineChartOptions.scales.xAxes[0].time.unit = "day";
-      this.lineChartOptions.scales.yAxes[0].ticks.stepSize = (Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / (this.date.stop.getDay() - this.date.start.getDay()) *0.1
+      this.lineChartOptions.scales.yAxes[0].ticks.stepSize = (Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / this.dateServ.dateDifference(this.date.stop,this.date.start,false)
     }
     this.longestPeriodObj = this.walutaService.longestPeriodOfNondecreasingRate(walutaData);
   }

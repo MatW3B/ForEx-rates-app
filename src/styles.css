@@ -1,7 +1,12 @@
 /* Application-wide Styles */
-body {
+html{
+  background-color: rgb(42, 42, 42);
+  display:flex;
+}
+
+#main{
     color: #ffffff;
-    background-color: #212121;
-    margin:2px;
-    padding:10px;
+    display: grid;
+    justify-content: center; 
+    overflow: auto;
   }

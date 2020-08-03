@@ -1,3 +1,17 @@
-form {
-    display: inline;
+
+#inputRow {
+    padding-top: 2ch;
+    padding-bottom: 0ch;
+    display: grid;
+    grid-template-columns: 22ch 22ch 12ch ;
+    column-gap: 2ch;
+}
+
+mat-expansion-panel {
+    float: left;
+    max-width: 65ch;
+}
+
+#wyszukaj {
+    padding: 0px 0px!important
 }

@@ -30,6 +30,7 @@ export class WalutaService {
     let dateStop = ratesData[0].effectiveDate;
     
     let counterPeriod: number = 0;
+    // check if previous rate is higher 
     for (let i = 1; i < ratesData.length; i++){
       if (ratesData[i].mid < ratesData[i-1].mid) {
         dateStop = ratesData[i-1].effectiveDate;
@@ -44,7 +45,9 @@ export class WalutaService {
         counterPeriod += 1;
       } 
     }
-    //if the date didnt change bind ending date
+    //TODO: rewrite this into comparing next boint instead 
+
+    // if the date didnt change bind ending date
     if (longestPeriod.dateStart == longestPeriod.dateStop) {
       longestPeriod.dateStop = ratesData[ratesData.length-1].effectiveDate 
     }
