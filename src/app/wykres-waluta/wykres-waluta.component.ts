@@ -120,7 +120,7 @@ export class WykresWalutaComponent implements OnInit {
       this.lineChartLabels.push(formatDate(element.effectiveDate,"yyyy-MM-dd",'en'));
       this.lineChartValues.push(element.mid);
     });
-    this.lineChartData = [{ data: this.lineChartValues, pointBackgroundColor: [], pointRadius:[]}];
+    this.lineChartData = [{ data: this.lineChartValues, pointBackgroundColor: [], pointRadius:[], lineTension:0.1}];
     // setting scale
     var monthDiff = this.dateServ.dateMonthDiff(this.date.start,this.date.stop);
     if (monthDiff > 3) {

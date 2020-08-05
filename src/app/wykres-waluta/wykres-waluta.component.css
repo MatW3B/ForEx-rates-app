@@ -1,5 +1,5 @@
 #longestPeriod{
-    margin:1em;   
+    margin:1em;
 }
 
 #chartText {
@@ -9,9 +9,8 @@
 #chartCanvas {
     height: 60vh;
     width: 92vw; 
-    max-width: 95vw;
     max-height: 75vh;
-
+    max-width: 95vmax;
     resize:both;
     overflow: hidden;   
     position: relative;
