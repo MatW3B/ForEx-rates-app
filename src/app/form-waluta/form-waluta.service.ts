@@ -13,7 +13,7 @@ export class FormWalutaService {
   urlCurrencyNames: string;
   
   constructor(private http: HttpClient, private dateServ: DateService) { 
-    this.urlCurrencyNames = "http://api.nbp.pl/api/exchangerates/tables/A/2020-01-02/";
+    this.urlCurrencyNames = "https://api.nbp.pl/api/exchangerates/tables/A/2020-01-02/";
   }
 
   getCurrencyNames() {

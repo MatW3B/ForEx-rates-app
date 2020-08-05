@@ -13,7 +13,7 @@ import { DateService } from "./date.service";
   providedIn: 'root'
 })
 export class WalutaService {
-  private walutaBaseUrl = 'http://api.nbp.pl/api/exchangerates/rates/a/';
+  private walutaBaseUrl = 'https://api.nbp.pl/api/exchangerates/rates/a/';
   private walutaReqDataSource = new Subject<WalutaModel>();
   private waluta: string;
   walutaReqData$ = this.walutaReqDataSource.asObservable();
