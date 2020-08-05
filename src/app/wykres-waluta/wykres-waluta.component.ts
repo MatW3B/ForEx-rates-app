@@ -99,6 +99,16 @@ export class WykresWalutaComponent implements OnInit {
             stepSize: 0.05  ,
             fontColor:"white",
           },
+          scaleLabel:{
+            display: true,
+            labelString: "PLN",
+            fontColor:"grey",
+            fontSize: 12,
+            padding:{
+              top:0,
+              bottom:0,
+            },
+          },
           gridLines:{
             color:this.gridLineColor,
           }

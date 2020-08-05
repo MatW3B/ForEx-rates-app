@@ -6,22 +6,13 @@
     position:top;
 }
 
-#chartYLabel{
-    transform: rotate(-90deg);
-    position: fixed;
-    left: 1.7ch;
-    top:21.4ch;
-    color: rgb(190, 180, 180);
-}
-
 #chartCanvas {
     height: 60vh;
     width: 92vw; 
     max-height: 75vh;
     max-width: 95vmax;
     resize:both;
-    overflow: hidden;   
-    left: 2.5ch;
+    overflow: hidden;
     position: relative;
 }
 
