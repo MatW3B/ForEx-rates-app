@@ -1,14 +1,14 @@
-<div id="form-waluta">
-  <mat-expansion-panel>
+<div id="formWaluta">
+  <mat-expansion-panel expanded="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Wybierz walutę
+        Wybór waluty
       </mat-panel-title>
     </mat-expansion-panel-header>
 
     <div id="inputRow">
     <form>
-        <mat-form-field>
+        <mat-form-field hintLabel="Lista walut po kliknięciu ^">
           <input matInput
                  placeholder="Waluta"
                  aria-label="Waluta"
@@ -16,7 +16,7 @@
                  [formControl]="currencyCtrl">
           <mat-error *ngIf="currencyCtrl.hasError('currencyInvalid')"> Niepoprawna Waluta</mat-error>
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let currency of filteredCurrencies | async" [value]="currency.code" (onSelectionChange)="_setCurrencyData(currency)">
+            <mat-option *ngFor="let currency of filteredCurrencies | async | sortBy:'asc':'code'" [value]="currency.code" (onSelectionChange)="_setCurrencyData(currency)">
               <span>{{currency.code}}</span> |
               <small > {{currency.currency}}</small>
             </mat-option>
@@ -25,15 +25,18 @@
       </form>
       
     <mat-form-field>
-      <mat-label> Wybierz daty</mat-label>
+      <mat-label> Wybór dat</mat-label>
       <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker] ="picker" [formGroup]="dateRangeCtrl"> 
           <input matStartDate formControlName="start" placeholder="Od">
           <input matEndDate formControlName="end" placeholder="Do">
       </mat-date-range-input>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-      <mat-error *ngIf="dateRangeCtrl.controls.end.hasError('notWeekDifference')"> Wybierz przynajmniej tydzień!</mat-error>
-      </mat-form-field>
+      <mat-date-range-picker touchUI #picker></mat-date-range-picker>
+      <mat-error *ngIf="dateRangeCtrl.controls.end.hasError('notWeekDifference')"> Wybierz przynajmniej tydzień</mat-error>
+      <mat-error *ngIf="dateRangeCtrl.controls.start.hasError('matDatepickerMin')"> Data powinna być po {{ minDate | date: 'dd.MM.y' }} </mat-error>
+      <mat-error *ngIf="dateRangeCtrl.controls.end.hasError('matDatepickerMax')"> Data powinna być przed {{ maxDate | date: 'dd.MM.y' }} </mat-error>
+    </mat-form-field>
+
     <button mat-raised-button color="accent" id="wyszukaj" 
     [disabled]=" !dateRangeCtrl.valid
       || !currencyCtrl.valid" 

@@ -123,12 +123,12 @@ export class WykresWalutaComponent implements OnInit {
     this.lineChartData = [{ data: this.lineChartValues, pointBackgroundColor: [], pointRadius:[]}];
     // setting scale
     var monthDiff = this.dateServ.dateMonthDiff(this.date.start,this.date.stop);
-    if (monthDiff > 1) {
+    if (monthDiff > 3) {
       this.lineChartOptions.scales.xAxes[0].time.unit = "month";
-      this.lineChartOptions.scales.yAxes[0].ticks.stepSize = (Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / (monthDiff * 0.6667);
+      this.lineChartOptions.scales.yAxes[0].ticks.stepSize = Math.round((Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / (monthDiff * 0.6667));
     } else {
       this.lineChartOptions.scales.xAxes[0].time.unit = "day";
-      this.lineChartOptions.scales.yAxes[0].ticks.stepSize = (Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / this.dateServ.dateDifference(this.date.stop,this.date.start,false)
+      this.lineChartOptions.scales.yAxes[0].ticks.stepSize = Math.round((Math.max(...this.lineChartValues) - Math.min(...this.lineChartValues)) / this.dateServ.dateDifference(this.date.stop,this.date.start,false))
     }
     this.longestPeriodObj = this.walutaService.longestPeriodOfNondecreasingRate(walutaData);
   }

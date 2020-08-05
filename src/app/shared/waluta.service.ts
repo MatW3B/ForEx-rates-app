@@ -30,26 +30,23 @@ export class WalutaService {
     let dateStop = ratesData[0].effectiveDate;
     
     let counterPeriod: number = 0;
-    // check if previous rate is higher 
+
     for (let i = 1; i < ratesData.length; i++){
-      if (ratesData[i].mid < ratesData[i-1].mid) {
-        dateStop = ratesData[i-1].effectiveDate;
-        if (counterPeriod > longestPeriod.length) {
+      if (ratesData[i-1].mid <= ratesData[i].mid) {
+        if (counterPeriod == 0) {
+          dateStart = ratesData[i-1].effectiveDate;
+        }
+        dateStop = ratesData[i].effectiveDate;
+        counterPeriod +=1;
+        if ( counterPeriod > longestPeriod.length 
+        && this.dateServ.dateDifference(dateStart,dateStop,true) >= this.dateServ.dateDifference(longestPeriod.dateStart,longestPeriod.dateStop,true)){
           longestPeriod.dateStart = dateStart;
           longestPeriod.dateStop = dateStop;
           longestPeriod.length = counterPeriod;
         }
-        dateStart = ratesData[i].effectiveDate;
-        counterPeriod = 0;
       } else {
-        counterPeriod += 1;
+        counterPeriod = 0;
       } 
-    }
-    //TODO: rewrite this into comparing next boint instead 
-
-    // if the date didnt change bind ending date
-    if (longestPeriod.dateStart == longestPeriod.dateStop) {
-      longestPeriod.dateStop = ratesData[ratesData.length-1].effectiveDate 
     }
     return longestPeriod
   }
@@ -70,7 +67,7 @@ export class WalutaService {
     this.waluta = waluta;
     var dataArray = this.dateServ.dateFragmentate(dataOd,dataDo);  
     
-    console.log('GetKurs');
+    console.log(dataArray);
     return from(dataArray)
     .pipe(concatMap(date => this.NBPhttpRequest(date))
       ,map((data: WalutaInitialModel) => data.rates

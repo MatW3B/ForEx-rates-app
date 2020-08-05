@@ -1,17 +1,21 @@
+#formWaluta {
+    margin:14px;
+}
 
 #inputRow {
     padding-top: 2ch;
     padding-bottom: 0ch;
     display: grid;
-    grid-template-columns: 22ch 22ch 12ch ;
+    grid-template-columns: 22ch 25ch 12ch ;
     column-gap: 2ch;
 }
 
 mat-expansion-panel {
     float: left;
-    max-width: 65ch;
+    max-width: 67ch;
 }
 
 #wyszukaj {
-    padding: 0px 0px!important
+    margin-top: 10px;
+    margin-bottom: 8px;
 }

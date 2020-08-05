@@ -8,14 +8,11 @@ export class DateService {
   constructor() { }
 
   dateDifference(date1: Date, date2: Date, ms: boolean = true): number {
-    var difference = date2.valueOf() - date1.valueOf(); 
-    if (ms == true) 
-      { return Math.abs(difference) }
-    else 
-      { return Math.abs(difference) / (1000 * 60 * 60 * 24) }
+    var difference = date2.getTime() - date1.getTime(); 
+    return ms == true ? Math.abs(difference) : Math.abs(difference) / (1000 * 60 * 60 * 24)  
   }
 
-  dateMonthDiff(dateFrom, dateTo) {
+  dateMonthDiff(dateFrom, dateTo): number {
     return dateTo.getMonth() - dateFrom.getMonth() + 
       (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
    }
@@ -26,7 +23,7 @@ export class DateService {
     var dateStart = dateBegin;
     // assignment in case there's no need to fragmentate
     var dateStop = dateBegin;
-    while(this.dateDifference(dateStart,dateEnd,false) > 367)
+    while(this.dateDifference(dateStop,dateEnd,false) > 367)
     {
       dateStop = new Date(dateStart.getFullYear()+1,1,1);
       dateArray.push([dateStart,dateStop]);

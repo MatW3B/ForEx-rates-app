@@ -9,11 +9,14 @@ import { currencyArray } from '../models/form-waluta-model';
 import { WalutaService } from '../shared/waluta.service';
 import { FormWalutaService } from './form-waluta.service';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { MyDateAdapter } from './date.adapter';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-form-waluta', // css
   templateUrl: './form-waluta.component.html',
   styleUrls: ['./form-waluta.component.css'],
+  providers: [{provide:DateAdapter, useClass:MyDateAdapter}]
 })
 export class FormWalutaComponent implements OnInit { 
   @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
