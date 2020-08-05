@@ -67,7 +67,6 @@ export class WalutaService {
     this.waluta = waluta;
     var dataArray = this.dateServ.dateFragmentate(dataOd,dataDo);  
     
-    console.log(dataArray);
     return from(dataArray)
     .pipe(concatMap(date => this.NBPhttpRequest(date))
       ,map((data: WalutaInitialModel) => data.rates

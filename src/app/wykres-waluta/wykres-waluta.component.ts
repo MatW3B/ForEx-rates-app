@@ -152,7 +152,6 @@ export class WykresWalutaComponent implements OnInit {
   ngAfterViewInit() {
     this.chart.changes.subscribe(element => {
       if(this.isDataAvailable && this.longestPeriodObj.length!=0){
-        console.log("chart changes!");
         for (var i=0; i<this.chart.first.datasets[0].data.length; i++){
           
           if (this.longestPeriodObj.dateStart <= new Date(this.chart.first.labels[i].toString()) 

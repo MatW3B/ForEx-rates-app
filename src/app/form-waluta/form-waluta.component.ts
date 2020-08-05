@@ -45,7 +45,6 @@ export class FormWalutaComponent implements OnInit {
    }
 
   private _filterCurrencies(value: string): currencyArray[] {
-    console.log(value);
     const filterValue = value.toLowerCase();
     return this.currencies.filter((currency) => currency.code.toLowerCase().indexOf(filterValue) === 0);
   }
@@ -71,7 +70,6 @@ export class FormWalutaComponent implements OnInit {
       (currencyData: any) => {
         this.currencies = currencyData;
         this.currencyCtrl.setValidators([this.fwService.currencyNameValidator(this.currencies)]);
-        console.log(this.currencies);
       }, 
       (err) => {console.log(err)},
       () => {
