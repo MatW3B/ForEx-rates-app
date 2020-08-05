@@ -77,7 +77,7 @@ export class WykresWalutaComponent implements OnInit {
       maintainAspectRatio:false,
       elements:{
         point:{
-          radius:2,
+          radius:2.5,
           },
       },
       scales:{
@@ -158,10 +158,10 @@ export class WykresWalutaComponent implements OnInit {
           && new Date(this.chart.first.labels[i].toString()) <= this.longestPeriodObj.dateStop )
           {
             this.chart.first.datasets[0].pointBackgroundColor[i] = this.colorAccent;
-            this.chart.first.datasets[0].pointRadius[i] = 3.5;
+            this.chart.first.datasets[0].pointRadius[i] = 4;
           } else { 
             this.chart.first.datasets[0].pointBackgroundColor[i] = 'rgba(148,159,177,1)';
-            this.chart.first.datasets[0].pointRadius[i] = 2;
+            this.chart.first.datasets[0].pointRadius[i] = 2.5;
           } 
         }
         this.chart.first.update(2000);
